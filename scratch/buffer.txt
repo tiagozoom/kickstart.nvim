@@ -1,0 +1,47 @@
+################################# Refresh Token - Staging #################################
+{:token-type :oauth2-client-credentials
+ :expiration-safety-margin "PT5M12S"
+ :token-url "https://180s-staging.us.auth0.com/oauth/token"
+ :audience "https://180s.com.br"
+ :client-id "xSwgiuDR1fdntMIDFvdc82yUxSI8f16j"
+ :client-secret "shsZdvHEhrWT7TWfOwBsnDntNPknKqP_a7mJaThvZGt_U1frcy9NI6k1IV50bAdI"}
+
+################################# Cartões fake Vindi #################################
+Mastercard
+5555 5555 5555 5557
+Visa
+4444 4444 4444 4448
+
+################################# Retract nos eventos do Canguruga #################################
+retract nos reports da CERC do evento de pagamento
+delete /event/:event-id/sro-reports
+i80 canguruga retract-event-ro.clj production EVENT_ID
+
+retract nos ROs da apolice
+delete /insurance/:insurance-id/reports
+i80 canguruga retract-insurance-ro.clj production INSURANCE_ID
+
+retract nos movimentos contábeis da apolice
+delete /ledger/admin/:insurance-id
+i80 canguruga retract-ledger.clj production INSURANCE_ID
+
+depois de deletado o evento, dar republish nos ROs da apolice
+post /insurance/:insurance-id/republish-reports
+i80 canguruga republish-insurance-ro.clj production INSURANCE_ID
+
+republish nos movimentos contábeis
+post /insurance/:insurance-id/republish-ledger
+i80 canguruga republish-ledger.clj production INSURANCE_ID
+
+################################# SFTP Installation #################################
+apk add --no-cache openssh
+
+################################# Tempo SFTP - Production #################################
+apk add --no-cache openssh
+sftp -oHostKeyAlgorithms=+ssh-dss 180seguros@187.50.107.20
+10!hdaHIUPHX*&
+
+
+UPDATE public.payment
+SET provider_id='d1df0c93-9b34-4db2-8ed4-19f4ee539f2'::uuid, payee_name='Eloísa Lopes Porto', payee_tax_code='01873850093', updated_at=now()
+WHERE id='16e963e8-aa6a-3142-b65d-0fc404bc5cc5'::uuid;
